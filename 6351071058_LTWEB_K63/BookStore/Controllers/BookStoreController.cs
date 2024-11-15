@@ -1,4 +1,5 @@
 ﻿using BookStore.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,10 +20,13 @@ namespace BookStore.Controllers
             string connectionString = ConfigurationManager.ConnectionStrings["QLBANSACHConnectionString"].ConnectionString;
             data = new QuanLyBanSachDataContext(connectionString);
         }
-        public ActionResult Index()
+        public ActionResult Index(int ? page)
         {
-            var sachmoi = Laysachmoi(5);
-            return View(sachmoi);
+            int pageSize = 1;
+
+            int pageNum = (page ?? 1);
+            var sachmoi = Laysachmoi(15);
+            return View(sachmoi.ToPagedList(pageNum, pageSize));
         }
         private List<SACH> Laysachmoi(int count)
         {
